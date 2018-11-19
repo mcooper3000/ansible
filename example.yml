@@ -6,3 +6,15 @@
     yum: name=httpd state=present
   - name: Start Apache
     service: name=httpd state=started
+  - name: Name this task for readability
+    module: parameters=go_here
+  - name: Deploy Apache Configuration File
+    copy: src=/ansible/files/conf/httpd.conf
+          dest=/etc/httpd/conf/
+  vars:
+    git_repo: https://github.com/repo.git
+    http_port: 8080
+    db_name: wordpress
+  sudo: yes
+  sudo_user: wordpress_user
+  gather_facts: no #will always run unless disabled, can be time consuming
