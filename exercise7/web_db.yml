@@ -10,9 +10,8 @@
     doc_root: /var/www/html/ansible/
     max_clients: 5
   vars_prompt:
-  - name: username
-    prompt: What is your name?
-
+    - name: username
+      prompt:  What is your name?
 
   tasks:
   - name: Ensure that Apache is installed
@@ -26,14 +25,13 @@
     template: src=templates/httpd.j2 dest=/etc/httpd/conf/httpd.conf
     notify:
       - Restart Apache
-    
+
   - name: Copy Site Files
     template: src=templates/index.j2 dest={{ doc_root }}/index.html
 
   handlers:
-    - name: Restart Apache
-      service: name=httpd state=restarted
-
+     - name: Restart Apache
+       service: name=httpd state=restarted
 
 - hosts: dbservers
   #sudo: yes
