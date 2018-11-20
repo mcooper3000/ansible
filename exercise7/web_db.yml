@@ -25,14 +25,14 @@
   - name: Deploy configuration File
     template: src=templates/httpd.j2 dest=/etc/httpd/conf/httpd.conf
     notify:
-     - Restart Apache
+      - Restart Apache
     
   - name: Copy Site Files
     template: src=templates/index.j2 dest={{ doc_root }}/index.html
 
-    handlers:
-     - name: Restart Apache
-     - service: name=httpd state=restarted
+  handlers:
+    - name: Restart Apache
+      service: name=httpd state=restarted
 
 
 - hosts: dbservers
