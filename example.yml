@@ -18,3 +18,68 @@
   sudo: yes
   sudo_user: wordpress_user
   gather_facts: no #will always run unless disabled, can be time consuming
+
+- hosts: webservers
+#debug / verbose output
+  tasks:
+  - debug: msg="This host {{ inventory_hostname }} during execution"
+  - shell: /usr/bin/whoami
+    register: username
+  -debug: var=username
+
+#Prompt user during execution
+- hosts: web1
+  vars_prompt:
+  - name: "sitename"
+    prompt: "What is the site name?"
+  
+  tasks:
+  - debug: msg="The name is {{ sitename }}"
+
+#Playbook handlers are for only when tasks are completed
+- hosts: web1
+  tasks:
+  - copy: src=/ansible/files/conf/httpd.conf
+          dest=/etc/httpd/conf/
+    notify:
+      - Apache Restart
+  handlers:
+  - name: Apache Restart
+    service: name=httpd state=restarted
+
+#Conditional clause
+- hosts: web1
+  tasks:
+  - yum: name=httpd state=present
+    when: ansible_os_family == "RedHat"
+
+  - apt: name=apache2 state=present
+    when: ansible_os_family == "Debian"
+
+#Conditional clause based on output
+- hosts: web1
+  tasks:
+  - command: ls /path/doesnt/exist
+    register: result
+    ignore_errors: yes
+
+  - debug: msg="Failure!"
+    when: result|failed #also available: success | failed | skipped
+
+#Modify jinja2 template and copy 
+- hosts: web1
+  tasks:
+  - template:
+      src=templates/httpd.j2
+      dest=/etc/httpd/conf/httpd.conf
+      owner=httpd
+
+#jinja2 file example - placeholders
+#
+#<VirtualHost*:80>
+#ServerAdmin {{ server_admin }}
+#DocumentRoot {{ site_root }}
+#ServerName {{ inventory_hostname }}
+#</VirtualHost>
+#
+
