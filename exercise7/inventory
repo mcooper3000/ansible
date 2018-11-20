@@ -1,5 +1,5 @@
 acs ansible_ssh_host=192.168.1.200
-web1 ansible_ssh_host=192.168.1.201 ansible_ssh_user=root ansible_ssh_pass=Vault-tec106
+web1 ansible_ssh_host=192.168.1.201
 db1 ansible_ssh_host=192.168.1.202
 
 [webservers]
