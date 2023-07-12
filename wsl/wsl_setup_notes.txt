@@ -1,0 +1,119 @@
+https://www.youtube.com/watch?v=CouuH3W6ZtA
+
+wsl --version
+WSL version: 1.2.0.0
+Kernel version: 5.15.90.1
+WSLg version: 1.0.51
+MSRDC version: 1.2.3770
+Direct3D version: 1.608.2-61064218
+DXCore version: 10.0.25131.1002-220531-1700.rs-onecore-base2-hyp
+Windows version: 10.0.19045.2846
+
+
+-suppress sudo prompt
+sudo visudo
+at the bottom add
+marc ALL=(ALL) NOPASSWD: ALL
+
+
+
+-Enable systemd
+echo -e "[boot]\nsystemd=true" | sudo tee /etc/wsl.conf
+
+
+-restart using within Terminal
+wsl.exe --shutdown
+wsl
+
+-list services 
+systemctl list-unit-files --type=service
+
+-install ansible
+sudo apt-get update -y &&\
+sudo apt-get install -y gcc python3-dev libkrb5-dev   &&\
+sudo apt-get install python3-pip -y  &&\
+pip3 install --upgrade pip  &&\
+pip3 install --upgrade virtualenv  &&\
+sudo apt install krb5-user -y  &&\
+pip3 install pywinrm  &&\
+sudo apt install ansible -y
+
+
+realm - mctesting.local
+server - dc1
+
+
+ansible --version
+2.10.8
+
+
+
+-persistent aliases
+cd  ~
+touch .bash_aliases
+vi .bash_aliases
+alias ansibledir="cd /mnt/c/admin/git/ansible"
+
+
+-install powershell core
+sudo apt-get install -y wget apt-transport-https software-properties-common && \
+wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb && \
+sudo dpkg -i packages-microsoft-prod.deb && \
+sudo apt-get update && \
+sudo add-apt-repository universe && \
+sudo apt-get install -y powershell
+
+-confirm version
+pwsh
+PowerShell 7.3.4
+
+-add module
+install-module VMWare.PowerCLI
+
+
+-install microk8s - https://microk8s.io/docs/install-wsl2
+sudo snap install microk8s --classic
+
+-microk8s commands
+sudo microk8s status
+sudo microk8s kubectl get nodes -o wide
+
+
+
+-install minikube
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg lsb-release
+
+--install docker key
+sudo mkdir -p /etc/apt/keyrings 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+ "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+ $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+--grant user access to docker
+sudo usermod -aG docker $USER && newgrp docker
+
+--isntall conntrack
+sudo apt install -y conntrack
+
+--minikube installer
+cd ~
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+mv minikube-linux-amd64 minikube
+chmod +x ./minikube
+
+sudo mv ./minikube /usr/local/bin/
+minikube config set driver docker
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+--minikube commands
+minikube start
+minikube kubectl -- get pods -A
+minikube kubectl get nodes
+
+
+
