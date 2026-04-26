@@ -1,0 +1,24 @@
+all:
+  children:
+    kea_sites:
+      hosts:
+        uk1:
+          ansible_host: 10.0.1.10
+          ha_partner: uk2
+        uk2:
+          ansible_host: 10.0.1.11
+          ha_partner: uk1
+
+        us1:
+          ansible_host: 10.0.2.10
+          ha_partner: us2
+        us2:
+          ansible_host: 10.0.2.11
+          ha_partner: us1
+
+        eu1:
+          ansible_host: 10.0.3.10
+          ha_partner: eu2
+        eu2:
+          ansible_host: 10.0.3.11
+          ha_partner: eu1
