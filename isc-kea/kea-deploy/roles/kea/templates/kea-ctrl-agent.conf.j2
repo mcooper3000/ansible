@@ -1,0 +1,16 @@
+{
+  "Control-agent": {
+    "http-host": "{{ kea_api_host }}",
+    "http-port": {{ kea_api_port }},
+    "cert-file": "{{ kea_cert_file }}",
+    "key-file": "{{ kea_key_file }}",
+    "trust-anchor": "{{ kea_ca_file }}",
+
+    "control-sockets": {
+      "dhcp4": {
+        "socket-type": "unix",
+        "socket-name": "/run/kea/kea4-ctrl-socket"
+      }
+    }
+  }
+}
