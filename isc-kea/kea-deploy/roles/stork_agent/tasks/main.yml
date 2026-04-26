@@ -1,19 +1,15 @@
-- name: Add Stork repository
-  shell: curl -1sLf 'https://dl.cloudsmith.io/public/isc/stork/setup.deb.sh' | bash
-
 - name: Install Stork Agent
   apt:
     name: isc-stork-agent
     state: present
 
-- name: Configure Stork Agent
+- name: Deploy Stork Agent config
   template:
     src: stork-agent.conf.j2
     dest: /etc/stork/agent.conf
-    mode: '0644'
 
 - name: Enable and start Stork Agent
   systemd:
     name: isc-stork-agent
     enabled: yes
-    state: started
+    state: restarted
