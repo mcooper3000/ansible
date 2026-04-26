@@ -1,0 +1,23 @@
+{
+  "high-availability": [
+    {
+      "this-server-name": "{{ inventory_hostname }}",
+      "mode": "{{ kea_ha_mode }}",
+      "heartbeat-delay": {{ kea_ha_heartbeat }},
+      "max-response-delay": {{ kea_ha_max_response_delay }},
+      "max-unacked-clients": {{ kea_ha_max_unacked_clients }},
+      "peers": [
+        {
+          "name": "{{ inventory_hostname }}",
+          "url": "http://{{ ansible_host }}:{{ kea_api_port }}/",
+          "role": "primary"
+        },
+        {
+          "name": "{{ hostvars[ha_partner].inventory_hostname }}",
+          "url": "http://{{ hostvars[ha_partner].ansible_host }}:{{ kea_api_port }}/",
+          "role": "standby"
+        }
+      ]
+    }
+  ]
+}
