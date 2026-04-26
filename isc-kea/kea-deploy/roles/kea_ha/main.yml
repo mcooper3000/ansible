@@ -1,0 +1,17 @@
+- name: Configure Kea HA hook
+  template:
+    src: kea-ha.json.j2
+    dest: /etc/kea/kea-ha.json
+    mode: '0644'
+
+- name: Insert HA hook into DHCP4 config
+  lineinfile:
+    path: /etc/kea/kea-dhcp4.conf
+    insertafter: '"Dhcp4": {'
+    line: '    "hooks-libraries": [ { "library": "/usr/lib/kea/hooks/libdhcp_ha.so", "parameters": "/etc/kea/kea-ha.json" } ],'
+    state: present
+
+- name: Restart Kea DHCP4
+  systemd:
+    name: isc-kea-dhcp4-server
+    state: restarted
