@@ -1,0 +1,23 @@
+- name: Create TLS directory
+  file:
+    path: "{{ kea_tls_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Copy PKI certificate
+  copy:
+    src: "files/{{ inventory_hostname }}.crt"
+    dest: "{{ kea_cert_file }}"
+    mode: '0600'
+
+- name: Copy PKI private key
+  copy:
+    src: "files/{{ inventory_hostname }}.key"
+    dest: "{{ kea_key_file }}"
+    mode: '0600'
+
+- name: Copy CA chain
+  copy:
+    src: "files/ca.crt"
+    dest: "{{ kea_ca_file }}"
+    mode: '0644'
