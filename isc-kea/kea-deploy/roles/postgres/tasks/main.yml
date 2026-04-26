@@ -1,0 +1,12 @@
+- name: Install PostgreSQL
+  apt:
+    name: [postgresql, postgresql-contrib]
+    state: present
+    update_cache: yes
+
+- name: Create Kea database and user
+  become_user: postgres
+  shell: |
+    psql -tc "SELECT 1 FROM pg_database WHERE datname='{{ kea_db_name }}'" | grep -q 1 || psql -c "CREATE DATABASE {{ kea_db_name }};"
+    psql -tc "SELECT 1 FROM pg_roles WHERE rolname='{{ kea_db_user }}'" | grep -q 1 || psql -c "CREATE USER {{ kea_db_user }} WITH PASSWORD '{{ kea_db_password }}';"
+    psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ kea_db_name }} TO {{ kea_db_user }};"
