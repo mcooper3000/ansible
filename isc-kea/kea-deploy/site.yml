@@ -1,0 +1,8 @@
+- name: Deploy full Kea stack
+  hosts: kea_sites
+  become: yes
+  roles:
+    - postgres
+    - kea
+    - kea_ha
+    - stork_agent
