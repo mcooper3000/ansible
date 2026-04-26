@@ -1,6 +1,27 @@
-kea_db_password: "StrongPassword"
-kea_api_port: 8000
-kea_ha_mode: "hot-standby"   # or "load-balancing"
+kea_db_name: "kea"
+kea_db_user: "kea"
+kea_db_password: "ChangeMe123"
+
+kea_api_port: 8443
+kea_api_host: "0.0.0.0"
+
+kea_tls_dir: "/etc/kea/tls"
+kea_cert_file: "{{ kea_tls_dir }}/kea-api.crt"
+kea_key_file: "{{ kea_tls_dir }}/kea-api.key"
+kea_ca_file: "{{ kea_tls_dir }}/ca.crt"
+
+kea_ha_mode: "hot-standby"
 kea_ha_heartbeat: 1000
 kea_ha_max_response_delay: 10000
 kea_ha_max_unacked_clients: 5
+
+kea_interface: "eth0"
+
+kea_subnet: "192.168.1.0/24"
+kea_pool_start: "192.168.1.100"
+kea_pool_end: "192.168.1.200"
+kea_router: "192.168.1.1"
+kea_dns_servers: "192.168.1.10,8.8.8.8"
+kea_domain: "example.local"
+
+stork_controller_url: "http://stork-controller.example.local:8080"
