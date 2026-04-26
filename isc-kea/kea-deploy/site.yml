@@ -1,8 +1,9 @@
-- name: Deploy full Kea stack
+- name: Deploy full Kea DHCP stack
   hosts: kea_sites
   become: yes
   roles:
     - postgres
     - kea
+    - kea_tls
     - kea_ha
     - stork_agent
