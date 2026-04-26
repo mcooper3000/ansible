@@ -1,0 +1,36 @@
+- name: Add ISC Kea repository
+  shell: curl -1sLf 'https://dl.cloudsmith.io/public/isc/kea-3-1/setup.deb.sh' | bash
+
+- name: Install Kea packages
+  apt:
+    name:
+      - isc-kea-dhcp4-server
+      - isc-kea-dhcp-ddns
+      - isc-kea-ctrl-agent
+      - isc-kea-admin
+    state: present
+
+- name: Deploy DHCP4 config
+  template:
+    src: kea-dhcp4.conf.j2
+    dest: /etc/kea/kea-dhcp4.conf
+
+- name: Deploy Control Agent config
+  template:
+    src: kea-ctrl-agent.conf.j2
+    dest: /etc/kea/kea-ctrl-agent.conf
+
+- name: Deploy DDNS config
+  template:
+    src: kea-dhcp-ddns.conf.j2
+    dest: /etc/kea/kea-dhcp-ddns.conf
+
+- name: Enable and start Kea services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  loop:
+    - isc-kea-dhcp4-server
+    - isc-kea-ctrl-agent
+    - isc-kea-dhcp-ddns
