@@ -1,0 +1,29 @@
+{
+  "Dhcp4": {
+    "interfaces-config": {
+      "interfaces": ["{{ kea_interface }}"],
+      "dhcp-socket-type": "raw"
+    },
+
+    "lease-database": {
+      "type": "postgresql",
+      "name": "{{ kea_db_name }}",
+      "user": "{{ kea_db_user }}",
+      "password": "{{ kea_db_password }}",
+      "host": "127.0.0.1"
+    },
+
+    "subnet4": [{
+      "id": 1,
+      "subnet": "{{ kea_subnet }}",
+      "pools": [{
+        "pool": "{{ kea_pool_start }} - {{ kea_pool_end }}"
+      }],
+      "option-data": [
+        { "name": "routers", "data": "{{ kea_router }}" },
+        { "name": "domain-name-servers", "data": "{{ kea_dns_servers }}" },
+        { "name": "domain-name", "data": "{{ kea_domain }}" }
+      ]
+    }]
+  }
+}
